@@ -31,3 +31,5 @@ Rooms expose two nicknames and the two scores only to members. A waiting invite 
 ## Failure recovery
 
 The native browser is disposable. Done returns to the same local settings. The timer journal uses a single storage write for the active marker and session history. Restoration records an unobserved active lap as interrupted with zero credit. A failed network check-in displays a retry status and resumes polling while the duel remains visible. A player can recover the current room after restarting on the same installation.
+
+When the deadline has passed, the first observer settles both players in the same locked transaction. Both receive eligible time up to the deadline. Later requests return the frozen totals, so the winner does not depend on which player checks first. The game accepts a short network grace interval and relies on cooperative, unmodified clients.

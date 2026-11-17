@@ -35,3 +35,5 @@ If deploying another instance, change the native service URL in src/competition.
 ## Pilot release gates
 
 Before store submission, verify signed-in Instagram navigation and a regular YouTube video on physical iPhone and Android hardware. Providers can restrict sign-in from embedded browsers. Verify playback, account switching, keyboard layout, accessibility and both filter states on the target OS versions. Google Play and App Store distribution require the owner's signing and publishing accounts. The browser preview can exercise duels immediately.
+
+On the provisioning Mac the generated Supabase administrator password is held in the owner's private ~/Library/Application Support/Offrally/deployment folder, outside the working tree. The restricted runtime connection is stored as a sensitive production secret in the Offrally Vercel project.

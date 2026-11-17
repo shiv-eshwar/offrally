@@ -27,3 +27,11 @@ For Android run `cd android && ./gradlew assembleDebug`. Install the debug APK o
 - [Architecture and data boundaries](architecture.md)
 - [Progress and verification](progress.md)
 - [Mobile builds](https://github.com/shiv-eshwar/offrally/actions/workflows/mobile.yml)
+
+## Screens
+
+| iPhone clubhouse | Friend round |
+| --- | --- |
+| <img src="docs/iphone-clubhouse.png" alt="Clubhouse on the iPhone simulator" width="270"> | <img src="docs/friend-duel.png" alt="Two friends in a live focus duel" width="270"> |
+
+[YouTube after enabling Shorts protection on the Android emulator](docs/android-youtube.png)
