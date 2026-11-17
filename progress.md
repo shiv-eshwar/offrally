@@ -1,5 +1,11 @@
 # Progress
 
+## Android 1.2 protection checks
+
+On an Android 15 emulator, coordinate taps on the five supported feed tabs stayed out of the viewer while adjacent controls responded. The Facebook fixture exercised both top and bottom navigation. Separate viewer entries exercised the Instagram and YouTube player identifiers and the Facebook viewer labels. The YouTube tab cover followed a rotation.
+
+Seven fixture packages exercised whole-app shields, including Reddit and an app chosen from the installed-app picker. The shield stayed over the foreground app, cleared for the notification shade and Android Home, and returned after Accessibility was reconnected. Pausing restored touch access. An in-place upgrade from the published 1.1 APK retained a saved Instagram rule. Physical-device checks with signed-in publisher apps remain open.
+
 ## Installed-app release, 18 November 2026
 
 - [x] Remove both native social browsers, all destination launch actions, website policies, their copied assets, and the old feed preferences UI.

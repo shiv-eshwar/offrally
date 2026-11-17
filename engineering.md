@@ -8,11 +8,11 @@ GitHub Actions runs the Android unit tests and creates a debug APK. Its macOS jo
 
 ## Android regression workflow
 
-Use a disposable API 35 emulator with Android debugging. The standalone project qa/android builds four tiny, test-only native apps. Its application IDs match the supported services so the production package allowlist and Android Accessibility event dispatch are exercised together. The fixtures have no network permission. Install them only on an empty emulator. A publisher-signed app must have a separate device for its acceptance check.
+Use a disposable API 35 emulator with Android debugging. The standalone project qa/android builds seven test-only native apps. Six use catalog package IDs and one exercises the installed-app picker. The fixtures have no network permission. Install them only on an empty emulator. A publisher-signed app must have a separate device for its acceptance check.
 
 1. Build Offrally with `cd android && ./gradlew :app:assembleDebug`. Build the fixtures from the repository root with `android/gradlew -p qa/android assembleDebug`. Install the Offrally debug APK and each fixture debug APK with adb. Android requires the -t option for the fixture APKs.
 2. In the installed Offrally build, open Protect, agree to the local disclosure and connect Offrally in Android Accessibility settings. Return to the app.
-3. Set ANDROID_SERIAL to the disposable emulator and forward its Offrally debug WebView DevTools socket to localhost port 19330. Run `node scripts/android-smoke.mjs`. The script checks the emulator, application identities and test-only flags before exercising active rules. It tests untouched ordinary screens, selected sections, the whole-app rule, pause and clear. Its screenshot goes to artifacts.
+3. Set ANDROID_SERIAL to the disposable emulator and forward its Offrally debug WebView DevTools socket to localhost port 19330. Run `node scripts/android-smoke.mjs`. The script checks the emulator, application identities and test-only flags before exercising active rules. It taps the covered tabs and their neighbors, exercises direct viewer entry, checks stable whole-app shields, and verifies Home, pause and rule removal.
 4. On physical Android hardware, exercise each supported publisher app from the launcher, a notification and a deep link. Check ordinary messages, long videos, unselected tabs and supported regional variants. Verify loss of permission, selection persistence and a return from a changed layout.
 
 ## iOS release checks

@@ -5,5 +5,5 @@
     <string name="package_name">app.offrally.club</string>
     <string name="custom_url_scheme">app.offrally.club</string>
     <string name="protection_label">Offrally app protection</string>
-    <string name="protection_description">Leave selected short-video screens or return Home for paused apps. Offrally checks navigation on this device. You choose each rule in the app.</string>
+    <string name="protection_description">Cover selected feed tabs, leave recognized short-video screens and shield paused apps. You choose the rules in Offrally.</string>
 </resources>

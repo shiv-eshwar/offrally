@@ -3,22 +3,29 @@ import { Capacitor, registerPlugin } from "@capacitor/core";
 import { App } from "@capacitor/app";
 import {
   ArrowRight,
+  AtSign,
   Check,
   ChevronDown,
+  Facebook,
   Ghost,
+  Hash,
   Instagram,
+  MessageCircle,
+  MessagesSquare,
   Music2,
+  Pin,
   Shield,
   ShieldCheck,
   Smartphone,
+  Twitch,
   Youtube,
 } from "lucide-react";
 
 type Mode = "allow" | "section" | "whole";
 type Rule = {
-  id: "instagram" | "youtube" | "snapchat" | "tiktok";
+  id: string;
   name: string;
-  section: string;
+  section?: string;
   installed: boolean;
   mode: Mode;
 };
@@ -35,6 +42,7 @@ const native = registerPlugin<{
   status(): Promise<Status>;
   requestAccess(): Promise<Status>;
   chooseApps(): Promise<Status>;
+  otherApps(): Promise<{ apps: Pick<Rule, "id" | "name">[] }>;
   setMode(options: { id: string; mode: Mode }): Promise<Status>;
   setActive(options: { active: boolean }): Promise<Status>;
 }>("AppProtection");
@@ -88,13 +96,98 @@ export function useProtection() {
 }
 
 type Guard = ReturnType<typeof useProtection>;
-const symbols = {
+const symbols: Record<string, typeof Smartphone> = {
   instagram: Instagram,
   youtube: Youtube,
   snapchat: Ghost,
   tiktok: Music2,
+  facebook: Facebook,
+  reddit: MessageCircle,
+  x: Hash,
+  threads: AtSign,
+  twitch: Twitch,
+  pinterest: Pin,
+  discord: MessagesSquare,
 };
 const countLabel = (n: number) => n + (n === 1 ? " app" : " apps");
+
+function OtherAppPicker({ guard }: { guard: Guard }) {
+  const [apps, setApps] = useState<Pick<Rule, "id" | "name">[] | null>(null);
+  const [filter, setFilter] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  async function open() {
+    setLoading(true);
+    setError("");
+    setFilter("");
+    try {
+      setApps((await native.otherApps()).apps);
+    } catch {
+      setError("Could not load installed apps. Try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+  if (apps === null)
+    return (
+      <>
+        <button
+          className="secondary full other-apps"
+          disabled={loading || guard.busy}
+          onClick={() => void open()}
+        >
+          {loading ? "Loading apps…" : "Add another installed app"}
+        </button>
+        {error && (
+          <p className="notice" role="alert">
+            {error}
+          </p>
+        )}
+      </>
+    );
+  const visible = apps.filter((app) =>
+    app.name.toLowerCase().includes(filter.trim().toLowerCase()),
+  );
+  return (
+    <div className="panel picker-panel">
+      <h2>Pause another app</h2>
+      <p>Choose an installed app to add a whole-app rule.</p>
+      <input
+        type="search"
+        aria-label="Search installed apps"
+        placeholder="Search installed apps"
+        value={filter}
+        onChange={(event) => setFilter(event.target.value)}
+      />
+      <div className="rule-choices other-app-choices">
+        {visible.map((app) => (
+          <button
+            disabled={guard.busy}
+            key={app.id}
+            onClick={() => {
+              setApps(null);
+              void guard.act(() =>
+                native.setMode({ id: app.id, mode: "whole" }),
+              );
+            }}
+          >
+            {app.name}
+          </button>
+        ))}
+        {visible.length === 0 && (
+          <p>
+            {apps.length
+              ? "No matching apps."
+              : "No more eligible apps installed."}
+          </p>
+        )}
+      </div>
+      <button className="secondary full" onClick={() => setApps(null)}>
+        Cancel
+      </button>
+    </div>
+  );
+}
 
 export function GuardLink({ guard, open }: { guard: Guard; open: () => void }) {
   const s = guard.state;
@@ -244,7 +337,10 @@ export function Protection({ guard }: { guard: Guard }) {
                 </div>
                 <div className="rule-list">
                   {state.apps?.map((rule) => {
-                    const Icon = symbols[rule.id];
+                    const Icon = symbols[rule.id] ?? Smartphone;
+                    const modes: Mode[] = rule.section
+                      ? ["allow", "section", "whole"]
+                      : ["allow", "whole"];
                     const open = expanded === rule.id;
                     return (
                       <div className="rule-card" key={rule.id}>
@@ -254,7 +350,11 @@ export function Protection({ guard }: { guard: Guard }) {
                           aria-controls={"choices-" + rule.id}
                           onClick={() => setExpanded(open ? null : rule.id)}
                         >
-                          <span className={"badge " + rule.id}>
+                          <span
+                            className={
+                              "badge " + (symbols[rule.id] ? rule.id : "")
+                            }
+                          >
                             <Icon />
                           </span>
                           <span>
@@ -276,32 +376,33 @@ export function Protection({ guard }: { guard: Guard }) {
                             role="group"
                             aria-label={rule.name + " protection rule"}
                           >
-                            {(["allow", "section", "whole"] as const).map(
-                              (mode) => (
-                                <button
-                                  key={mode}
-                                  disabled={busy}
-                                  aria-pressed={rule.mode === mode}
-                                  onClick={() =>
-                                    void act(() =>
-                                      native.setMode({ id: rule.id, mode }),
-                                    )
-                                  }
-                                >
-                                  <span>{ruleText({ ...rule, mode })}</span>
-                                  {rule.mode === mode && <Check size={16} />}
-                                </button>
-                              ),
-                            )}
+                            {modes.map((mode) => (
+                              <button
+                                key={mode}
+                                disabled={busy}
+                                aria-pressed={rule.mode === mode}
+                                onClick={() =>
+                                  void act(() =>
+                                    native.setMode({ id: rule.id, mode }),
+                                  )
+                                }
+                              >
+                                <span>{ruleText({ ...rule, mode })}</span>
+                                {rule.mode === mode && <Check size={16} />}
+                              </button>
+                            ))}
                           </div>
                         )}
                       </div>
                     );
                   })}
                 </div>
+                <OtherAppPicker guard={guard} />
                 <p className="footnote">
-                  Skip leaves a recognized video screen when it opens. If an app
-                  update changes that screen, you can pause the entire app.
+                  Skip covers recognized feed tabs and leaves the feed if you
+                  open it another way. Coverage depends on the app’s layout and
+                  language. A whole-app rule shows a pause screen when you open
+                  the app.
                 </p>
               </>
             ))}

@@ -488,7 +488,8 @@ h2 + .panel {
 .form label + label {
   margin-top: 15px;
 }
-.form input {
+.form input,
+.picker-panel input {
   background: #171923;
   border: 1px solid #505160;
   border-radius: 12px;
@@ -603,6 +604,18 @@ h2 + .panel {
 .rule-heading .badge {
   margin: 0;
   flex: none;
+}
+.rule-heading .badge:not(.instagram, .youtube, .snapchat, .tiktok) {
+  background: #343345;
+  color: var(--lav);
+}
+.other-apps,
+.picker-panel input {
+  margin-top: 12px;
+}
+.other-app-choices {
+  max-height: 36vh;
+  overflow-y: auto;
 }
 .badge.snapchat {
   background: #494324;

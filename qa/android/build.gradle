@@ -11,6 +11,9 @@ android {
         youtube { dimension 'app'; applicationId 'com.google.android.youtube' }
         snapchat { dimension 'app'; applicationId 'com.snapchat.android' }
         tiktok { dimension 'app'; applicationId 'com.zhiliaoapp.musically' }
+        facebook { dimension 'app'; applicationId 'com.facebook.katana' }
+        reddit { dimension 'app'; applicationId 'com.reddit.frontpage' }
+        other { dimension 'app'; applicationId 'app.offrally.qafixture.other' }
     }
     variantFilter { v -> if (v.buildType.name == 'release') v.ignore = true }
 }

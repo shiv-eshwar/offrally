@@ -13,8 +13,15 @@ final class GuardSettings {
         return prefs.getString(app.id(), "allow");
     }
 
+    static String modeForPackage(SharedPreferences prefs, String pkg) {
+        GuardApp app = GuardApp.forPackage(pkg);
+        if (app != null) return mode(prefs, app);
+        return "whole".equals(prefs.getString(InstalledApps.PREFIX + pkg, "allow")) ? "whole" : "allow";
+    }
+
     static boolean hasRules(SharedPreferences prefs) {
         for (GuardApp app : GuardApp.values()) if (!mode(prefs, app).equals("allow")) return true;
+        for (String key : prefs.getAll().keySet()) if (key.startsWith(InstalledApps.PREFIX)) return true;
         return false;
     }
 

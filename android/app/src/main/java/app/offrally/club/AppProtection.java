@@ -3,8 +3,10 @@ package app.offrally.club;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
+import java.util.TreeSet;
 import com.getcapacitor.JSArray;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
@@ -45,6 +47,19 @@ public final class AppProtection extends Plugin {
             apps.put(row);
             if (!mode.equals("allow")) count++;
         }
+        PackageManager pm = getContext().getPackageManager();
+        for (String key : new TreeSet<>(p.getAll().keySet())) {
+            if (!key.startsWith(InstalledApps.PREFIX)) continue;
+            String pkg = key.substring(InstalledApps.PREFIX.length());
+            JSObject row = new JSObject();
+            ApplicationInfo info = InstalledApps.find(pm, pkg);
+            row.put("id", key);
+            row.put("name", info == null ? pkg : info.loadLabel(pm).toString());
+            row.put("installed", info != null && info.enabled);
+            row.put("mode", "whole");
+            apps.put(row);
+            count++;
+        }
         state.put("apps", apps);
         state.put("count", count);
         return state;
@@ -52,15 +67,41 @@ public final class AppProtection extends Plugin {
 
     @PluginMethod public void status(PluginCall call) { call.resolve(snapshot()); }
 
+    @PluginMethod public void otherApps(PluginCall call) {
+        JSArray apps = new JSArray();
+        for (ApplicationInfo info : InstalledApps.otherApps(getContext())) {
+            String id = InstalledApps.PREFIX + info.packageName;
+            if (prefs().contains(id)) continue;
+            JSObject app = new JSObject();
+            app.put("id", id);
+            app.put("name", info.loadLabel(getContext().getPackageManager()).toString());
+            apps.put(app);
+        }
+        JSObject result = new JSObject();
+        result.put("apps", apps);
+        call.resolve(result);
+    }
+
     @PluginMethod public void setMode(PluginCall call) {
-        GuardApp app = GuardApp.forId(call.getString("id", ""));
+        String id = call.getString("id", "");
+        GuardApp app = GuardApp.forId(id);
         String mode = call.getString("mode", "");
-        if (app == null || !(mode.equals("allow") || mode.equals("section") || mode.equals("whole"))) {
+        SharedPreferences p = prefs();
+        boolean supported = app != null && (mode.equals("allow") || mode.equals("whole") || (mode.equals("section") && app.section != null));
+        if (app == null && id.startsWith(InstalledApps.PREFIX)) {
+            if (mode.equals("allow")) supported = p.contains(id);
+            if (mode.equals("whole")) {
+                for (ApplicationInfo info : InstalledApps.otherApps(getContext())) {
+                    if (id.equals(InstalledApps.PREFIX + info.packageName)) { supported = true; break; }
+                }
+            }
+        }
+        if (!supported) {
             call.reject("Unknown protection rule.");
             return;
         }
-        SharedPreferences p = prefs();
-        p.edit().putString(app.id(), mode).apply();
+        if (mode.equals("allow")) p.edit().remove(id).apply();
+        else p.edit().putString(id, mode).apply();
         if (!GuardSettings.hasRules(p)) p.edit().putBoolean("active", false).apply();
         call.resolve(snapshot());
     }
@@ -78,7 +119,7 @@ public final class AppProtection extends Plugin {
     @PluginMethod public void requestAccess(PluginCall call) {
         getActivity().runOnUiThread(() -> new AlertDialog.Builder(getActivity())
             .setTitle("Connect app protection?")
-            .setMessage("Offrally uses Android Accessibility to detect which of your selected apps is open. For section rules, it checks the screen layout and navigation labels on this device. It uses Back or Home when a rule matches. Offrally does not save or send screen contents or messages. You can turn access off in Android Settings at any time.")
+            .setMessage("Offrally uses Accessibility to identify the foreground app. For Skip rules, it checks navigation labels and layout on this device, covers the matching tab and leaves recognized video feeds. For whole-app rules, it covers the app with a pause screen. Screen contents stay on this device and are never saved. You can turn access off in Android Settings at any time.")
             .setNegativeButton("Cancel", (d, w) -> call.resolve(snapshot()))
             .setOnCancelListener(d -> call.resolve(snapshot()))
             .setPositiveButton("Agree and continue", (d, w) -> {
