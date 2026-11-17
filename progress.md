@@ -18,3 +18,7 @@
 | Build scope | Debug APK and iOS Simulator archive are pilot builds. Physical devices, App Store / Play Store release signing, provider logins and store review are outstanding. |
 
 Final scoring regression passed on the production deployment. Both active players received their remaining eligible seconds when the round closed. A later heartbeat left both final scores unchanged. The production browser smoke check used two independent browser contexts, and the Android and iOS build jobs passed in run 44171562828.
+
+## Public README gallery
+
+Captured the active solo timer and Instagram feed controls from the released Android APK. Opened the live YouTube site in the app and checked that Subscriptions was visible and Shorts was hidden. Captured an active duel once both test players had earned time. The clubhouse image comes from the iPhone Simulator build.
