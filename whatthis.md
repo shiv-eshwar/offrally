@@ -1,16 +1,15 @@
 # Offrally
 
-Offrally is a mobile focus club for two people who want their messages, subscriptions and saved videos without an endless short-video feed. Open the Instagram or YouTube website inside Offrally. Each service retains its own accounts and cookies.
+Offrally helps two friends spend less time scrolling while keeping the social apps and accounts they already use. Someone can set up protection once, leave Offrally and open Instagram, YouTube, Snapchat or TikTok from their home screen.
 
-## The everyday loop
+## App protection
 
-1. Choose which shelves, tabs and destinations to hide in Feeds. Reels and Shorts start hidden. Other controls are opt-in.
-2. Open a cleaned-up website or start a timed solo focus session. During focus, stay on the timer. Leaving the app interrupts the session. The app explains this before starting.
-3. Invite a friend with a room code. Once two players join, each can score independently during the same timed round. Foreground check-ins earn time. The higher score wins and equal scores tie.
-4. Review completed and interrupted solo sessions on your device. Duel scores are visible to the two participants.
+On Android, choose a rule for each app. Allow it, leave its short-video screen when recognized, or return to the home screen when the whole app opens. Section rules target Reels, Shorts, Spotlight and For You. The publisher still draws its own tabs. Someone who needs a predictable boundary across layout changes can choose the whole app. Offrally asks for consent and Android Accessibility access before acting.
 
-## Scope and identity
+On iPhone and iPad, authorize Screen Time, choose individual apps in Apple's private picker, then turn on shields. Opening a selected app displays Apple's shield. iOS exposes whole apps as opaque tokens and offers no control over the Reels or Shorts button inside an app.
 
-The protected browsers operate inside Offrally. The standalone Instagram and YouTube apps remain controlled by their publishers. Website updates can change the available selectors. Signing in, external links, camera and video behavior depend on the provider and platform. The focus score measures participation in the timer. It cannot establish what someone did on another device.
+Rules are off on installation, including upgrades from the original pilot. Pause protection in Offrally at any time. Solo focus laps, local history and private invite-code duels work independently of mobile permissions. The web edition offers the clubhouse, timer and duels.
 
-The 43-second SocialLite demo and supplied screenshots informed the navigation and filtering requirements. Offrally uses original typography, artwork, wording, colors and screens. No screenshots, logos or videos from the reference app ship in the product.
+## Focus with a friend
+
+Pick a duration and send your friend a room code. Once both players join, each earns time while their duel screen is open. The higher score wins and equal scores tie. Private rounds measure timer participation. App choices, screen contents and social identities stay out of the competition service.
