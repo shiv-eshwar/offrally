@@ -19,3 +19,15 @@ The server owns admission, round start, deadline and scoring. The first player c
 ## Deployment surfaces
 
 Android and iOS packages embed the same first-party UI and generated filter rules. The web preview exercises the timer, settings and duel flows. A standard webpage cannot filter another origin; protected feeds require the installed mobile app. Backend migrations and deployment instructions live alongside the client. Local solo and filter features work independently of the competition service.
+
+## Deployed data path
+
+The mobile shell sends HTTPS requests to the Vercel /api/round endpoint. The browser version uses the same origin. A device generates 32 random bytes when it first enters a round. The bearer value stays in first-party storage and travels only to the game endpoint. The gateway hashes it to a pseudonymous player identifier and assigns that identity transaction-locally before executing the database function. Clearing local storage loses the seat. Nicknames are display values and need not be unique.
+
+The Supabase database is dedicated to Offrally. A restricted database login can execute the room function and has no direct access to the private room table. The client never receives a database login. Joining locks the room row before claiming the vacant seat. The three-second scoring loop uses database timestamps. An interval exceeding eight seconds earns zero. Moving away from the duel issues a final check-out when the transport is available. A dropped request can lose the final interval. Polling sends no browsing history or third-party cookies.
+
+Rooms expose two nicknames and the two scores only to members. A waiting invite can be claimed for one day. This pilot retains finished rounds in Postgres. It has no public directory, prize payouts, account recovery or cross-device identity sync.
+
+## Failure recovery
+
+The native browser is disposable. Done returns to the same local settings. The timer journal uses a single storage write for the active marker and session history. Restoration records an unobserved active lap as interrupted with zero credit. A failed network check-in displays a retry status and resumes polling while the duel remains visible. A player can recover the current room after restarting on the same installation.
