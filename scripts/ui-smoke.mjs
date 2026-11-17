@@ -22,15 +22,16 @@ try {
     p.on("pageerror", (e) => errors.push(e.message));
   await host.goto(url);
   await host.getByRole("heading", { name: "Focus club." }).waitFor();
-  await host.getByRole("button", { name: "Feeds", exact: true }).click();
-  let s = host.getByRole("switch", { name: /Hide Reels/ });
-  assert.equal(await s.getAttribute("aria-checked"), "true");
-  await s.click();
-  await host.reload();
-  await host.getByRole("button", { name: "Feeds", exact: true }).click();
-  assert.equal(await s.getAttribute("aria-checked"), "false");
-  await host.getByRole("button", { name: "Open Instagram" }).click();
-  await host.getByRole("status").waitFor();
+  await host.getByRole("button", { name: "Protect", exact: true }).click();
+  await host.getByRole("heading", { name: "On your phone" }).waitFor();
+  assert.equal(
+    await host
+      .getByRole("button", {
+        name: /Open Instagram|Open YouTube|Connect Accessibility/,
+      })
+      .count(),
+    0,
+  );
   await host.getByRole("button", { name: "Club", exact: true }).click();
   await host.getByRole("button", { name: "Start a focus lap" }).click();
   await host.getByRole("button", { name: "Start timer" }).click();
@@ -63,7 +64,7 @@ try {
   );
   assert.deepEqual(errors, []);
   console.log(
-    "Two-browser UI pass: settings persistence, native-only guidance, timer, history, create, join, live scoreboard, mobile width.",
+    "Two-browser UI pass: mobile protection availability, timer, history, create, join, live scoreboard, mobile width.",
   );
 } finally {
   await browser.close();

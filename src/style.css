@@ -58,9 +58,7 @@ button svg {
 }
 header,
 .section-head,
-.panel-head,
 .step,
-.toggle-row,
 .duel-link,
 .logrow,
 .brand,
@@ -69,7 +67,6 @@ header,
 .hero-code,
 .seg,
 .presets,
-.panel-head,
 .secondary,
 .back,
 .primary,
@@ -108,8 +105,7 @@ header {
   border-radius: 20px;
 }
 .clubmark span,
-.dot,
-.feed-card small span {
+.dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -190,25 +186,15 @@ small {
   justify-content: space-between;
   margin: 24px 0 12px;
 }
-.section-head button {
-  display: flex;
-  align-items: center;
-  color: var(--muted);
-  font-size: 12px;
-  gap: 3px;
-}
-.section-head h2,
 h2 {
   font: 650 23px/1.2 var(--display);
   letter-spacing: -1px;
 }
-.feed-pair,
 .metrics {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 11px;
 }
-.feed-card,
 .panel,
 .duel-link,
 .metrics > div,
@@ -216,20 +202,6 @@ h2 {
   border: 1px solid var(--line);
   background: var(--card);
   border-radius: 21px;
-}
-.feed-card {
-  text-align: left;
-  position: relative;
-  padding: 16px;
-  display: grid;
-  justify-items: start;
-  gap: 4px;
-}
-.corner {
-  position: absolute;
-  right: 15px;
-  top: 17px;
-  color: var(--muted);
 }
 .badge,
 .duel-icon {
@@ -248,20 +220,9 @@ h2 {
   background: #432e30;
   color: #ffa18d;
 }
-.feed-card strong,
-.duel-link strong,
-.panel-head strong {
+.duel-link strong {
   font: 650 18px var(--display);
   letter-spacing: -0.6px;
-}
-.feed-card small {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.feed-card small span {
-  width: 5px;
-  height: 5px;
 }
 .duel-link {
   width: 100%;
@@ -348,47 +309,6 @@ nav .selected {
 }
 .panel {
   padding: 17px;
-}
-.panel-head {
-  gap: 12px;
-  margin-bottom: 12px;
-}
-.panel-head .badge {
-  margin: 0;
-}
-.toggle-row {
-  width: 100%;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 16px 0;
-  text-align: left;
-  border-top: 1px solid var(--line);
-}
-.toggle-row small {
-  font-size: 12px;
-}
-.switch {
-  width: 40px;
-  height: 24px;
-  border-radius: 20px;
-  background: #515260;
-  flex: none;
-  padding: 3px;
-}
-.switch:after {
-  content: "";
-  display: block;
-  width: 18px;
-  height: 18px;
-  background: #eee;
-  border-radius: 50%;
-}
-.switch.on {
-  background: var(--lime);
-}
-.switch.on:after {
-  transform: translateX(16px);
-  background: #20271a;
 }
 .primary {
   width: 100%;

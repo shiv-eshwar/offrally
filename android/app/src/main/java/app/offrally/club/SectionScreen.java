@@ -50,7 +50,8 @@ final class SectionScreen {
         if (raw == null) return false;
         String s = raw.toString().trim().toLowerCase(java.util.Locale.ROOT);
         String wanted = label.toLowerCase(java.util.Locale.ROOT);
-        return s.equals(wanted) || s.startsWith(wanted + ", tab") || s.equals(wanted + ", selected")
+        return s.equals(wanted) || s.equals(wanted + ", tab") || s.startsWith(wanted + ", tab,")
+            || s.startsWith(wanted + ", tab ") || s.equals(wanted + ", selected")
             || s.equals(wanted + " tab");
     }
 

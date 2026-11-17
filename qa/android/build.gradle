@@ -1,0 +1,16 @@
+plugins { id 'com.android.application' version '8.7.2' }
+
+android {
+    namespace 'app.offrally.qafixture'
+    compileSdk 35
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+    defaultConfig { minSdk 23; targetSdk 35; versionCode 1; versionName 'fixture' }
+    flavorDimensions 'app'
+    productFlavors {
+        instagram { dimension 'app'; applicationId 'com.instagram.android' }
+        youtube { dimension 'app'; applicationId 'com.google.android.youtube' }
+        snapchat { dimension 'app'; applicationId 'com.snapchat.android' }
+        tiktok { dimension 'app'; applicationId 'com.zhiliaoapp.musically' }
+    }
+    variantFilter { v -> if (v.buildType.name == 'release') v.ignore = true }
+}
