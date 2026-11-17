@@ -4,4 +4,6 @@
     <string name="title_activity_main">Offrally</string>
     <string name="package_name">app.offrally.club</string>
     <string name="custom_url_scheme">app.offrally.club</string>
+    <string name="protection_label">Offrally app protection</string>
+    <string name="protection_description">Leave selected short-video screens or return Home for paused apps. Offrally checks navigation on this device. You choose each rule in the app.</string>
 </resources>

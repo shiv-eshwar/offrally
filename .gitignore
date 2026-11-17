@@ -10,5 +10,4 @@ playwright-report/
 artifacts/
 .DS_Store
 
-public/policy/
 .vercel

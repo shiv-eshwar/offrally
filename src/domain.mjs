@@ -1,33 +1,3 @@
-export const catalogs = {
-  instagram: {
-    name: "Instagram",
-    slug: "IG",
-    items: [
-      ["reels", "Reels", "Hide the tab, reel links and reel feeds."],
-      ["explore", "Explore", "Hide the discovery grid and its entry points."],
-      ["stories", "Stories", "Hide the story tray and story links."],
-    ],
-  },
-  youtube: {
-    name: "YouTube",
-    slug: "YT",
-    items: [
-      ["shorts", "Shorts", "Hide the Shorts tab, shelves and short videos."],
-      ["home", "Home feed", "Open Subscriptions instead of recommendations."],
-      ["related", "Up next", "Hide related videos under the player."],
-      ["comments", "Comments", "Hide comments below videos."],
-    ],
-  },
-};
-export const defaults = {
-  reels: true,
-  explore: false,
-  stories: false,
-  shorts: true,
-  home: false,
-  related: false,
-  comments: false,
-};
 export function startSession(minutes, now = Date.now()) {
   if (!Number.isInteger(minutes) || minutes < 1 || minutes > 120)
     throw Error("Choose 1–120 minutes.");

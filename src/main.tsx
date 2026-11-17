@@ -6,16 +6,14 @@ import {
   Activity,
   ArrowLeft,
   ArrowRight,
-  ArrowUpRight,
   Check,
-  ChevronRight,
   Clock3,
   Flag,
   History,
   House,
   Minus,
   Plus,
-  SlidersHorizontal,
+  Shield,
   Swords,
   Trophy,
 } from "lucide-react";
@@ -23,14 +21,14 @@ import "@fontsource-variable/manrope";
 import "@fontsource-variable/space-grotesk";
 import "./style.css";
 import { TrackArt } from "./Hero";
-import { Feeds, Badge, type Site } from "./Feeds";
+import { Protection, GuardLink, useProtection } from "./Protection";
 import Duels from "./Duels";
-import { catalogs, displayTime, result, startSession } from "./domain.mjs";
-import { read, save, type Flags, type Entry } from "./store";
-type Page = "Club" | "Feeds" | "Duels" | "Log";
+import { displayTime, result, startSession } from "./domain.mjs";
+import { read, save, type Entry } from "./store";
+type Page = "Club" | "Protect" | "Duels" | "Log";
 const nav = [
   [House, "Club"],
-  [SlidersHorizontal, "Feeds"],
+  [Shield, "Protect"],
   [Swords, "Duels"],
   [Activity, "Log"],
 ] as const;
@@ -47,9 +45,9 @@ function Shell() {
     }
     return d;
   });
+  const guard = useProtection();
   const ref = useRef(data);
   const [page, setPage] = useState<Page>("Club"),
-    [site, setSite] = useState<Site>("instagram"),
     [setup, setSetup] = useState(false),
     [now, tick] = useState(Date.now()),
     [message, setMessage] = useState("");
@@ -111,10 +109,6 @@ function Shell() {
     setSetup(false);
     setMessage("");
     window.scrollTo(0, 0);
-  }
-  function feeds(s: Site) {
-    setSite(s);
-    go("Feeds");
   }
   function minute(m: number) {
     modify({ ...data, minutes: Math.min(120, Math.max(1, m)) });
@@ -248,34 +242,7 @@ function Shell() {
                 {message}
               </p>
             )}
-            <div className="section-head">
-              <h2>Clean feeds</h2>
-              <button onClick={() => feeds("instagram")}>
-                Customize <ChevronRight size={15} />
-              </button>
-            </div>
-            <div className="feed-pair">
-              {(Object.keys(catalogs) as Site[]).map((s) => (
-                <button
-                  className={"feed-card " + s}
-                  key={s}
-                  onClick={() => feeds(s)}
-                >
-                  <Badge site={s} />
-                  <ArrowUpRight className="corner" size={17} />
-                  <strong>{catalogs[s].name}</strong>
-                  <small>
-                    <span />
-                    {
-                      catalogs[s].items.filter(
-                        ([k]) => data.flags[k as keyof Flags],
-                      ).length
-                    }{" "}
-                    active
-                  </small>
-                </button>
-              ))}
-            </div>
+            <GuardLink guard={guard} open={() => go("Protect")} />
             <button className="duel-link" onClick={() => go("Duels")}>
               <span className="duel-icon">
                 <Swords />
@@ -287,14 +254,8 @@ function Shell() {
               <ArrowRight />
             </button>
           </>
-        ) : page === "Feeds" ? (
-          <Feeds
-            initial={site}
-            flags={data.flags}
-            change={(k) =>
-              modify({ ...data, flags: { ...data.flags, [k]: !data.flags[k] } })
-            }
-          />
+        ) : page === "Protect" ? (
+          <Protection guard={guard} />
         ) : page === "Duels" ? (
           <Duels />
         ) : (

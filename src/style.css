@@ -619,3 +619,129 @@ h2 + .panel {
 .player strong {
   font: 600 22px var(--display);
 }
+.guard-link,
+.rule-heading,
+.guard-banner-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  text-align: left;
+}
+.guard-link,
+.rule-card,
+.guard-banner {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+}
+.guard-link {
+  padding: 16px;
+  margin-top: 16px;
+}
+.guard-link strong,
+.rule-heading strong {
+  display: block;
+  font: 650 19px/1.2 var(--display);
+  letter-spacing: -0.6px;
+}
+.guard-link > svg:last-child,
+.rule-heading > svg:last-child {
+  margin-left: auto;
+  color: var(--muted);
+}
+.guard-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  color: var(--lav);
+  background: #393044;
+  border-radius: 14px;
+}
+.guard-banner {
+  padding: 18px;
+  background: linear-gradient(130deg, #322d42, #252332);
+}
+.guard-banner.live {
+  background: linear-gradient(130deg, #2c3c30, #222b28);
+  border-color: #4d6645;
+}
+.guard-banner.live .guard-icon {
+  background: #3e5138;
+  color: var(--lime);
+}
+.rule-list {
+  display: grid;
+  gap: 9px;
+}
+.rule-heading {
+  padding: 14px;
+  min-height: 72px;
+}
+.rule-heading .badge {
+  margin: 0;
+  flex: none;
+}
+.badge.snapchat {
+  background: #494324;
+  color: #ffe676;
+}
+.badge.tiktok {
+  background: #244144;
+  color: #9af3ec;
+}
+.rule-heading small,
+.guard-link small {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+}
+.rotated {
+  transform: rotate(180deg);
+}
+.rule-choices {
+  padding: 0 12px 12px;
+  display: grid;
+  gap: 3px;
+}
+.rule-choices button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  border-radius: 10px;
+  padding: 10px 12px;
+  min-height: 44px;
+}
+.rule-choices [aria-pressed="true"] {
+  background: #383447;
+  color: #deceff;
+  font-weight: 700;
+}
+.device-only,
+.picker-panel {
+  margin-top: 16px;
+}
+.device-only > svg {
+  color: var(--lav);
+  margin-bottom: 10px;
+}
+.device-only p,
+.picker-panel p {
+  font-size: 14px;
+  margin-top: 8px;
+  color: var(--muted);
+}
+.device-only a {
+  color: var(--lime);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 16px;
+}
+.retry {
+  color: inherit;
+  text-decoration: underline;
+}
