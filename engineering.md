@@ -1,39 +1,30 @@
 # Engineering and delivery
 
-## Phase 1 — repository and contracts
+## Build targets
 
-Record product boundaries, architecture, acceptance gates and work completed. Make an independent private repository. Commit each tested phase.
+Use Node 22+, npm ci, npm test and npm run sync. Android uses JDK 21, compile SDK 35 and the Gradle wrapper. The app supports API 23+. The iOS project uses Swift Package Manager and targets iOS 16+ for individual Screen Time authorization. Build each target after syncing the first-party UI. Native rules stay independent of the duel service.
 
-## Phase 2 — local product
+GitHub Actions runs the Android unit tests and creates a debug APK. Its macOS job builds for Simulator, compiles the Release configuration for a generic physical iPhone without signing, then boots a simulator and captures the clubhouse. A simulator cannot exercise Screen Time enforcement.
 
-Build a mobile-first React interface with a bundled UI on Capacitor. Persist feed switches and solo history. Account for interruptions and reloads. Verify timer behavior with deterministic clocks and exercise the public interface in a browser.
+## Android regression workflow
 
-## Phase 3 — protected feeds
+Use a disposable API 35 emulator with Android debugging. The standalone project qa/android builds four tiny, test-only native apps. Its application IDs match the supported services so the production package allowlist and Android Accessibility event dispatch are exercised together. The fixtures have no network permission. Install them only on an empty emulator. A publisher-signed app must have a separate device for its acceptance check.
 
-Generate native browser assets from a shared navigation and element-filter policy. Build an isolated Android WebView and iOS WKWebView with a visible exit, ordinary HTTPS navigation and a separate cookie store from the app UI. Test direct links, clicks, client-side routes, late DOM changes, ordinary watch/posts and toggles.
+1. Build Offrally with `cd android && ./gradlew :app:assembleDebug`. Build the fixtures from the repository root with `android/gradlew -p qa/android assembleDebug`. Install the Offrally debug APK and each fixture debug APK with adb. Android requires the -t option for the fixture APKs.
+2. In the installed Offrally build, open Protect, agree to the local disclosure and connect Offrally in Android Accessibility settings. Return to the app.
+3. Set ANDROID_SERIAL to the disposable emulator and forward its Offrally debug WebView DevTools socket to localhost port 19330. Run `node scripts/android-smoke.mjs`. The script checks the emulator, application identities and test-only flags before exercising active rules. It tests untouched ordinary screens, selected sections, the whole-app rule, pause and clear. Its screenshot goes to artifacts.
+4. On physical Android hardware, exercise each supported publisher app from the launcher, a notification and a deep link. Check ordinary messages, long videos, unselected tabs and supported regional variants. Verify loss of permission, selection persistence and a return from a changed layout.
 
-## Phase 4 — friend rounds
+## iOS release checks
 
-Provision an isolated backend where available. Implement invite creation, second-player admission, bounded check-in credit and a server-determined finish. Exercise a round with two independent identities. Check that outsiders cannot read scores, clients cannot assign elapsed time and a third participant cannot take a seat.
+A physical install needs the owner's Apple Developer team, the Family Controls entitlement in its provisioning profile and Screen Time permission on the device. Distribution through TestFlight or the App Store also needs Apple's Family Controls distribution approval. On an entitled physical device, choose individual apps, save, enable the shield, open the selected apps from Home, pause protection and confirm access returns. Verify authorization revocation and a relaunch. [Apple's Family Controls documentation](https://developer.apple.com/documentation/familycontrols)
 
-## Phase 5 — integration and distribution
+## Android distribution
 
-Build Android and iOS targets, run available simulator checks, validate a browser preview and package artifacts. Record release credentials, hardware and provider checks still required. Never include development tokens, signing keys, local SDK paths or third-party user data in Git.
+The GitHub APK is debug-signed for evaluation. The unsigned Android App Bundle can be signed with the owner's Play upload key. The app declares its AccessibilityService as a non-accessibility-tool service, explains its on-device inspection and actions before opening Settings, and accepts a cancellation. Google Play distribution requires the publisher's Accessibility API declaration, disclosure evidence and review. [Google Play AccessibilityService policy](https://support.google.com/googleplay/android-developer/answer/10964491)
 
-## Commands and environments
+## Game service
 
-Use Node 22 or newer and npm ci. Run npm test, npm run build and npx cap sync. Android uses JDK 21, Android SDK 35 and the Gradle wrapper. The iOS Xcode project uses Swift Package Manager. The Mobile verification workflow builds debug packages on Linux and macOS. Nothing runs inside the user's other social apps.
+The mobile app calls the Vercel round endpoint. The web edition calls its own origin. The dedicated Supabase project hosts the SQL migrations. Deploy migrations to that project with supabase db push. Store the restricted gateway login's pooled TLS connection URI as the sensitive Vercel production variable CLUB_DATABASE_URL. The function disables prepared statements and sets the actor inside its transaction. Keep private credentials outside the repository and client environment.
 
-For the live game test, run CLUB_TEST_URL=https://offrally.vercel.app node scripts/duel-smoke.mjs. It creates a one-minute private round. The UI counterpart is scripts/ui-smoke.mjs and requires Chrome. The Android smoke script expects the debug WebView DevTools endpoint forwarded to localhost port 19330. Use only a development emulator with this script.
-
-## Operations
-
-The dedicated Supabase project is in Mumbai. Apply migrations with supabase db push to that project. Supply a generated password to the restricted offrally_gateway database role, and store its pooled TLS connection URI under CLUB_DATABASE_URL as a sensitive Vercel production environment variable. The function expects a transaction-pool connection and disables prepared statements. Each request sets the pseudonymous actor only inside its transaction. Never put a database URI in a VITE_ environment variable. Set the production function region close to the database.
-
-If deploying another instance, change the native service URL in src/competition.ts before syncing the mobile packages. The web UI uses its serving origin. A standard static Vite server serves the local solo and settings flows, while vercel dev or a Vercel deployment serves the multiplayer API.
-
-## Pilot release gates
-
-Before store submission, verify signed-in Instagram navigation and a regular YouTube video on physical iPhone and Android hardware. Providers can restrict sign-in from embedded browsers. Verify playback, account switching, keyboard layout, accessibility and both filter states on the target OS versions. Google Play and App Store distribution require the owner's signing and publishing accounts. The browser preview can exercise duels immediately.
-
-On the provisioning Mac the generated Supabase administrator password is held in the owner's private ~/Library/Application Support/Offrally/deployment folder, outside the working tree. The restricted runtime connection is stored as a sensitive production secret in the Offrally Vercel project.
+Use `CLUB_TEST_URL=https://offrally.vercel.app node scripts/ui-smoke.mjs` for the two-client UI check with Chrome. The API smoke and deadline settlement checks live alongside it. Each creates a private timed test room.

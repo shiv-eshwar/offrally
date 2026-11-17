@@ -1,43 +1,35 @@
 # Offrally
 
-A pocket focus club for iOS and Android. Hide Instagram Reels and YouTube Shorts inside a protected browser, run solo focus laps, or challenge a friend to a timed duel.
+Pause the parts of your social apps that pull you back in. Open Instagram, YouTube, Snapchat or TikTok from your home screen with the account you already use. Set the rules once in **Offrally → Protect**. Solo focus laps and private two-player duels are available on mobile and web.
 
-**[Try Offrally on the web](https://offrally.vercel.app)** · **[Download the Android and iOS Simulator pilot builds](https://github.com/shiv-eshwar/offrally/releases/tag/v0.1.0-pilot)**
+**[Download the Android test build and iPhone Simulator build](https://github.com/shiv-eshwar/offrally/releases/tag/v1.1.0)** · **[Open the web clubhouse](https://offrally.vercel.app)**
 
-The web app supports solo laps and friend duels. Feed filtering runs inside the installed mobile apps.
+| Platform | What protection does |
+| --- | --- |
+| Android | Choose **Allow everything**, **Skip** the short-video section or **Pause entire app** for each supported app. Skip sends you back from a recognized Instagram Reels, YouTube Shorts, Snapchat Spotlight or TikTok For You screen. Pausing the whole app returns you to Android Home. Rules take effect after you connect Accessibility and turn on protection. |
+| iPhone and iPad, iOS 16+ | Connect Screen Time, pick individual apps in Apple's private picker, then enable protection. iOS displays a shield over each selected app. Apple's public controls operate at app level. Physical installs require an appropriately provisioned build. |
+| Web | Use solo laps, history and friend duels. Device protection is a mobile feature. |
+
+Android section detection depends on the publisher's accessibility layout. The native tab stays visible. The release has been exercised on native emulator fixtures. Current signed-in publisher builds and a provisioned physical iPhone are outstanding release checks.
 
 ## Offrally in action
 
-| iPhone clubhouse | Instagram feed controls | Live friend duel |
+| App protection on Android | iPhone clubhouse | Live friend duel |
 | :---: | :---: | :---: |
-| <img src="docs/iphone-clubhouse.png" alt="Offrally clubhouse running in iPhone Simulator" width="230"> | <img src="docs/android-feed-controls.png" alt="Instagram feed preferences with Hide Reels enabled on Android" width="230"> | <img src="docs/friend-duel.png" alt="A live one-minute duel on Android with two players and their focus scores" width="230"> |
+| <img src="docs/android-app-protection.png" alt="Offrally on Android with three section rules and a whole-app TikTok rule enabled" width="230"> | <img src="docs/iphone-clubhouse.png" alt="Offrally clubhouse on an iPhone simulator with app protection and focus laps" width="230"> | <img src="docs/friend-duel.png" alt="Two players scoring focus time in a live duel" width="230"> |
 
-| Solo lap in progress | YouTube with Shorts hidden |
+| Android rule choices | Solo focus lap |
 | :---: | :---: |
-| <img src="docs/android-focus-lap.png" alt="Offrally's active focus timer counting down on Android" width="230"> | <img src="docs/android-youtube.png" alt="YouTube inside Offrally with Home, Subscriptions and You still visible and the Shorts tab hidden" width="230"> |
+| <img src="docs/android-rule-picker.png" alt="Instagram rule choices with Skip Reels selected" width="230"> | <img src="docs/android-focus-lap.png" alt="Active Offrally one-minute focus lap on Android" width="230"> |
 
-Captured from the pilot running on iPhone Simulator and the Android emulator. The duel uses test players connected to the live service.
+The protection screen is from the installed Android app using test apps on an emulator. The clubhouse is from iPhone Simulator. The duel shows two test players connected to the live scoring service.
 
-## Play with a friend
+## Focus with a friend
 
-Choose **Duels**, enter a nickname, pick a round length and create a room. Share the invite code. Your friend opens **Join room** on their device. The round starts when the second player joins. Keep the duel screen open to score. Both players see the winner when time runs out.
+Open **Duels**, choose a nickname and a round length, then share the room code. The second player joins from their device. Each scores while their duel screen is open. Both see the same result when the round ends.
 
-## Use the mobile app
+## Build and verification
 
-Open **Feeds**, select Instagram or YouTube and choose the sections to hide. Tap **Open Instagram** or **Open YouTube**. The original standalone apps continue to operate normally. **Done** returns to Offrally. The feed browser loads the provider directly. Accounts and cookies belong to the embedded browser.
+Use Node 22+, run `npm ci`, `npm test` and `npm run sync`. Build Android with `cd android && ./gradlew :app:testDebugUnitTest :app:assembleDebug`. Open `ios/App/App.xcodeproj` in Xcode for iOS.
 
-## Build
-
-    npm ci
-    npm test
-    npm run sync
-
-For Android run `cd android && ./gradlew assembleDebug`. Install the debug APK on an Android device or emulator. For iOS open `ios/App/App.xcodeproj`, choose the App scheme and an iPhone simulator. Device installs require signing. GitHub Actions also builds downloadable Android and iOS simulator packages.
-
-## Project notes
-
-- [Product](whatthis.md)
-- [Engineering and deployment](engineering.md)
-- [Architecture and data boundaries](architecture.md)
-- [Progress and verification](progress.md)
-- [Mobile builds](https://github.com/shiv-eshwar/offrally/actions/workflows/mobile.yml)
+[Product](whatthis.md) · [Architecture](architecture.md) · [Engineering and release checks](engineering.md) · [Verification record](progress.md) · [Mobile build workflow](https://github.com/shiv-eshwar/offrally/actions/workflows/mobile.yml)
