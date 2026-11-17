@@ -32,7 +32,7 @@ struct FeedPolicy: Decodable {
 public class ClubBrowser: CAPPlugin, CAPBridgedPlugin {
     public let identifier = "ClubBrowser"
     public let jsName = "ClubBrowser"
-    public let pluginMethods = [CAPPluginMethod(name: "open", returnType: CAPPluginReturnPromise)]
+    public let pluginMethods: [CAPPluginMethod] = [CAPPluginMethod(name: "open", returnType: CAPPluginReturnPromise)]
     @objc func open(_ call: CAPPluginCall) {
         guard let site = call.getString("site"), let flags = call.getObject("flags") as? [String: Bool],
               let rulesURL = Bundle.main.url(forResource: "rules", withExtension: "json", subdirectory: "public/policy"),
