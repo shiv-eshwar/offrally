@@ -1,0 +1,26 @@
+name: Mobile verification
+on: [push, workflow_dispatch]
+jobs:
+  ios:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 22, cache: npm}
+      - run: npm ci && npm test && npm run build && npx cap sync ios
+      - run: xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Debug -destination 'generic/platform=iOS Simulator' -derivedDataPath /tmp/offrally-build CODE_SIGNING_ALLOWED=NO build
+      - run: ditto -c -k --keepParent /tmp/offrally-build/Build/Products/Debug-iphonesimulator/App.app Offrally-simulator.zip
+      - uses: actions/upload-artifact@v4
+        with: {name: Offrally-iOS-Simulator, path: Offrally-simulator.zip}
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 22, cache: npm}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: 21}
+      - run: npm ci && npm test && npm run build && npx cap sync android
+      - run: cd android && ./gradlew assembleDebug
+      - uses: actions/upload-artifact@v4
+        with: {name: Offrally-Android, path: android/app/build/outputs/apk/debug/app-debug.apk}
