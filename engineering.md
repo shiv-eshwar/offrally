@@ -19,3 +19,19 @@ Provision an isolated backend where available. Implement invite creation, second
 ## Phase 5 — integration and distribution
 
 Build Android and iOS targets, run available simulator checks, validate a browser preview and package artifacts. Record release credentials, hardware and provider checks still required. Never include development tokens, signing keys, local SDK paths or third-party user data in Git.
+
+## Commands and environments
+
+Use Node 22 or newer and npm ci. Run npm test, npm run build and npx cap sync. Android uses JDK 21, Android SDK 35 and the Gradle wrapper. The iOS Xcode project uses Swift Package Manager. The Mobile verification workflow builds debug packages on Linux and macOS. Nothing runs inside the user's other social apps.
+
+For the live game test, run CLUB_TEST_URL=https://offrally.vercel.app node scripts/duel-smoke.mjs. It creates a one-minute private round. The UI counterpart is scripts/ui-smoke.mjs and requires Chrome. The Android smoke script expects the debug WebView DevTools endpoint forwarded to localhost port 19330. Use only a development emulator with this script.
+
+## Operations
+
+The dedicated Supabase project is in Mumbai. Apply migrations with supabase db push to that project. Supply a generated password to the restricted offrally_gateway database role, and store its pooled TLS connection URI under CLUB_DATABASE_URL as a sensitive Vercel production environment variable. The function expects a transaction-pool connection and disables prepared statements. Each request sets the pseudonymous actor only inside its transaction. Never put a database URI in a VITE_ environment variable. Set the production function region close to the database.
+
+If deploying another instance, change the native service URL in src/competition.ts before syncing the mobile packages. The web UI uses its serving origin. A standard static Vite server serves the local solo and settings flows, while vercel dev or a Vercel deployment serves the multiplayer API.
+
+## Pilot release gates
+
+Before store submission, verify signed-in Instagram navigation and a regular YouTube video on physical iPhone and Android hardware. Providers can restrict sign-in from embedded browsers. Verify playback, account switching, keyboard layout, accessibility and both filter states on the target OS versions. Google Play and App Store distribution require the owner's signing and publishing accounts. The browser preview can exercise duels immediately.

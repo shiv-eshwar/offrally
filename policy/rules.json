@@ -1,23 +1,87 @@
 {
-  "instagram":{
-    "hosts":["instagram.com","www.instagram.com","m.instagram.com"],
-    "authHosts":["accountscenter.instagram.com","www.facebook.com","m.facebook.com"],
-    "home":"https://www.instagram.com/",
-    "rules":{
-      "reels":{"paths":["/reel","/reels"],"css":["a[href^='/reel/']","a[href^='/reels/']","a[href='/reels']","nav a:has([aria-label='Reels'])"]},
-      "explore":{"paths":["/explore"],"css":["a[href='/explore']","a[href^='/explore/']"]},
-      "stories":{"paths":["/stories"],"css":["a[href^='/stories/']","[role='menu'][aria-label='Stories']","[aria-label='Stories tray']"]}
+  "instagram": {
+    "hosts": ["instagram.com", "www.instagram.com", "m.instagram.com"],
+    "authHosts": [
+      "accountscenter.instagram.com",
+      "www.facebook.com",
+      "m.facebook.com"
+    ],
+    "home": "https://www.instagram.com/",
+    "rules": {
+      "reels": {
+        "paths": ["/reel", "/reels"],
+        "css": [
+          "a[href^='/reel/']",
+          "a[href^='/reels/']",
+          "a[href='/reels']",
+          "nav a:has([aria-label='Reels'])"
+        ]
+      },
+      "explore": {
+        "paths": ["/explore"],
+        "css": ["a[href='/explore']", "a[href^='/explore/']"]
+      },
+      "stories": {
+        "paths": ["/stories"],
+        "css": [
+          "a[href^='/stories/']",
+          "[role='menu'][aria-label='Stories']",
+          "[aria-label='Stories tray']"
+        ]
+      }
     }
   },
-  "youtube":{
-    "hosts":["youtube.com","www.youtube.com","m.youtube.com"],
-    "authHosts":["accounts.google.com","consent.youtube.com","accounts.youtube.com"],
-    "home":"https://m.youtube.com/",
-    "rules":{
-      "shorts":{"paths":["/shorts"],"css":["a[href^='/shorts/']","a[href='/shorts']","ytm-shorts-lockup-view-model","ytm-reel-shelf-renderer","ytd-reel-shelf-renderer","ytm-pivot-bar-item-renderer:has(a[href^='/shorts'])","ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts])","yt-tab-shape[tab-title='Shorts']","[role='tab'][aria-label='Shorts']","ytm-pivot-bar-item-renderer:has([aria-label='Shorts'])"]},
-      "home":{"paths":["/"],"fallback":"https://m.youtube.com/feed/subscriptions","css":["a[aria-label='Home'][href='/']"]},
-      "related":{"paths":[],"css":["#related","ytm-watch-next-secondary-results-renderer","ytd-watch-next-secondary-results-renderer"]},
-      "comments":{"paths":[],"css":["#comments","ytm-comments-entry-point-header-renderer","ytm-comment-section-renderer","ytm-engagement-panel-section-list-renderer[target-id='engagement-panel-comments-section']"]}
+  "youtube": {
+    "hosts": ["youtube.com", "www.youtube.com", "m.youtube.com"],
+    "authHosts": [
+      "accounts.google.com",
+      "consent.youtube.com",
+      "accounts.youtube.com"
+    ],
+    "home": "https://m.youtube.com/",
+    "rules": {
+      "shorts": {
+        "paths": ["/shorts"],
+        "css": [
+          "a[href^='/shorts/']",
+          "a[href='/shorts']",
+          "ytm-shorts-lockup-view-model",
+          "ytm-reel-shelf-renderer",
+          "ytd-reel-shelf-renderer",
+          "ytm-pivot-bar-item-renderer:has(a[href^='/shorts'])",
+          "ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts])",
+          "yt-tab-shape[tab-title='Shorts']",
+          "[role='tab'][aria-label='Shorts']",
+          "ytm-pivot-bar-item-renderer:has([aria-label='Shorts'])",
+          "ytm-pivot-bar-item-renderer:has(.pivot-shorts)",
+          ".pivot-bar-item-tab.pivot-shorts"
+        ]
+      },
+      "home": {
+        "paths": ["/"],
+        "fallback": "https://m.youtube.com/feed/subscriptions",
+        "css": [
+          "a[aria-label='Home'][href='/']",
+          "ytm-pivot-bar-item-renderer:has(.pivot-w2w)"
+        ]
+      },
+      "related": {
+        "paths": [],
+        "css": [
+          "#related",
+          "ytm-watch-next-secondary-results-renderer",
+          "ytd-watch-next-secondary-results-renderer"
+        ]
+      },
+      "comments": {
+        "paths": [],
+        "css": [
+          "#comments",
+          "ytm-comments-entry-point-header-renderer",
+          "ytm-comment-section-renderer",
+          "ytm-engagement-panel-section-list-renderer[target-id='engagement-panel-comments-section']"
+        ]
+      }
     }
   }
 }

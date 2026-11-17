@@ -39,7 +39,7 @@ public class FeedActivity extends Activity {
     @Override public void onCreate(Bundle state){
         super.onCreate(state);
         String site=getIntent().getStringExtra("site");
-        try{policy=new JSONObject(asset("rules.json")).getJSONObject(site);flags=new JSONObject(getIntent().getStringExtra("flags"));script=asset("filter.js")+"("+policy+","+flags+")";}catch(Exception e){finish();return;}
+        try{policy=new JSONObject(asset("rules.json")).getJSONObject(site);flags=new JSONObject(getIntent().getStringExtra("flags"));script=asset("filter.js")+"\ninstallOffrallyFilter("+policy+","+flags+")";}catch(Exception e){finish();return;}
         LinearLayout layout=new LinearLayout(this);layout.setOrientation(LinearLayout.VERTICAL);layout.setBackgroundColor(Color.rgb(21,22,30));
         layout.setOnApplyWindowInsetsListener((v,insets)->{v.setPadding(insets.getSystemWindowInsetLeft(),insets.getSystemWindowInsetTop(),insets.getSystemWindowInsetRight(),insets.getSystemWindowInsetBottom());return insets;});
         LinearLayout bar=new LinearLayout(this);bar.setGravity(Gravity.CENTER_VERTICAL);Button close=new Button(this);close.setText("Done");close.setOnClickListener(v->finish());bar.addView(close);

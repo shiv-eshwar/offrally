@@ -1,1 +1,9 @@
-{"appId":"app.offrally.club","appName":"Offrally","webDir":"dist","backgroundColor":"#151620"}
+{
+  "appId": "app.offrally.club",
+  "appName": "Offrally",
+  "webDir": "dist",
+  "backgroundColor": "#151620",
+  "android": {
+    "adjustMarginsForEdgeToEdge": "auto"
+  }
+}

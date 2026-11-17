@@ -1,1 +1,13 @@
-{"framework":"vite","buildCommand":"npm run build","outputDirectory":"dist","functions":{"api/round.mjs":{"maxDuration":20}}}
+{
+  "framework": "vite",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "functions": {
+    "api/round.mjs": {
+      "maxDuration": 20
+    }
+  },
+  "regions": [
+    "bom1"
+  ]
+}

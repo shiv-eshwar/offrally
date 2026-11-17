@@ -45,7 +45,7 @@ public class ClubBrowser: CAPPlugin, CAPBridgedPlugin {
                   let objects = try JSONSerialization.jsonObject(with: bytes) as? [String: Any],
                   let raw = objects[site] else { call.reject("Unknown feed"); return }
             let args = try JSONSerialization.data(withJSONObject: [raw,flags])
-            let source = try String(contentsOf: scriptURL, encoding: .utf8) + "(..." + String(decoding: args, as: UTF8.self) + ")"
+            let source = try String(contentsOf: scriptURL, encoding: .utf8) + "\ninstallOffrallyFilter(..." + String(decoding: args, as: UTF8.self) + ")"
             DispatchQueue.main.async {
                 guard let presenter = self.bridge?.viewController, presenter.presentedViewController == nil else {
                     call.reject("Close the open view first"); return
