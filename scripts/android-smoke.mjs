@@ -81,8 +81,15 @@ try {
     );
   }
   async function screen(pkg, kind, outcome) {
+    if (outcome === "launcher") {
+      await guard();
+      await until(
+        () => top().includes("app.offrally.club/"),
+        "Expected Offrally before launch",
+      );
+    }
     const ticket = randomUUID();
-    shell(
+    const launch = shell(
       "am",
       "start",
       "-S",
@@ -95,11 +102,18 @@ try {
       "ticket",
       ticket,
     );
+    assert.ok(
+      launch.includes(pkg + "/app.offrally.qafixture.Screen") &&
+        !launch.includes("Error:"),
+      launch,
+    );
     const logged = (state) =>
       adb("logcat", "-d", "-s", "OffrallyFixture:I").includes(
         pkg + " " + ticket + " " + state,
       );
-    await until(() => logged(kind), pkg + " did not open " + kind);
+    // A whole-package rule may send the splash window Home before Activity.onCreate.
+    if (outcome !== "launcher")
+      await until(() => logged(kind), pkg + " did not open " + kind);
     if (outcome === "back") {
       await until(
         () => logged("home") && top().includes(pkg + "/"),
