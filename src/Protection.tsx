@@ -254,7 +254,7 @@ export function Protection({ guard }: { guard: Guard }) {
             Android can skip short-video screens or pause an app. iPhone can
             shield selected apps with Screen Time.
           </p>
-          <a href="https://github.com/shiv-eshwar/offrally/releases/tag/v1.1.0">
+          <a href="https://github.com/shiv-eshwar/offrally/releases">
             Get the mobile build <ArrowRight size={16} />
           </a>
         </div>
